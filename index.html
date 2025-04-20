@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Love Quote Overlay</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #000;
+      overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .photo-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+    }
+
+    .photo-container img {
+      max-width: 100vw;
+      max-height: 100vh;
+      width: auto;
+      height: auto;
+      display: block;
+      filter: brightness(0.9) contrast(1.1);
+    }
+
+    .word-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 200%;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 3px;
+      color: white;
+      font-size: 9px;
+      line-height: 1.1;
+      pointer-events: none;
+      opacity: 0.4;
+      mix-blend-mode: lighten;
+      animation: scrollUp 60s linear infinite;
+      text-align: justify;
+    }
+
+    .word-overlay span {
+      margin: 1px;
+      white-space: nowrap;
+      opacity: 0;
+      animation: fadeIn 1s ease-in forwards;
+    }
+
+    .word-overlay span:nth-child(odd) {
+      animation-delay: 0.2s;
+    }
+
+    .word-overlay span:nth-child(even) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes scrollUp {
+      0% {
+        transform: translateY(0%);
+      }
+      100% {
+        transform: translateY(-50%);
+      }
+    }
+
+    @media only screen and (max-width: 768px) {
+      .word-overlay {
+        font-size: 7px;
+      }
+    }
+
+    @media only screen and (max-width: 414px) {
+      .word-overlay {
+        font-size: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="photo-container">
+    <img src="4-21-25.png" alt="Background Photo" />
+  </div>
+  <div class="word-overlay" id="wordOverlay"></div>
+</div>
+
+<audio id="backgroundMusic" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_19708cbce1.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<script>
+  const quotes = [
+    "You are my today and all of my tomorrows.",
+    "In your smile, I see something more beautiful than the stars.",
+    "Every love story is beautiful, but ours is my favorite.",
+    "You feel like home.",
+    "I love you more than words can show.",
+    "With you, I am complete.",
+    "My heart is perfect because you are inside.",
+    "You make my world brighter.",
+    "Forever isn't long enough with you.",
+    "You're my favorite notification.",
+    "I still get butterflies when I see you.",
+    "Loving you is the easiest thing I've ever done.",
+    "You're my dream come true.",
+    "I look at you and see the rest of my life.",
+    "You're my always and forever.",
+    "You’re the reason I believe in love.",
+    "You are my sunshine on cloudy days.",
+    "Home is wherever I'm with you.",
+    "I didn’t choose you, my heart did.",
+    "You are my sweetest adventure.",
+    "Just being with you feels right.",
+    "You’re the piece I didn’t know was missing.",
+    "My favorite place is inside your hug.",
+    "I’m much more me when I’m with you.",
+    "You’re my once in a lifetime.",
+    "When I’m with you, nothing else matters.",
+    "You're the smile I put on every day.",
+    "I crave you in the most innocent way.",
+    "I didn’t know what love was until I met you.",
+    "You’re my calm in every storm.",
+    "I found my forever when I found you.",
+    "I still fall for you every single day.",
+    "I want all my mornings with you.",
+    "You are the poem I never knew how to write.",
+    "Even in silence, I feel your love.",
+    "Your love is my favorite feeling.",
+    "You’re the wish my heart made real.",
+    "You make my heart skip a beat — every time.",
+    "You're my light in the dark.",
+    "I love you more than coffee — and that’s saying a lot."
+  ];
+
+  const wordOverlay = document.getElementById("wordOverlay");
+  const audio = document.getElementById("backgroundMusic");
+
+  // Fill the overlay with quotes
+  const wordCount = 3000;
+  for (let i = 0; i < wordCount; i++) {
+    const span = document.createElement("span");
+    span.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+    wordOverlay.appendChild(span);
+  }
+
+  // Attempt autoplay
+  window.addEventListener('load', () => {
+    audio.play().catch(() => {
+      // If autoplay fails, wait for user interaction
+      const resumeAudio = () => {
+        audio.play();
+        document.removeEventListener('click', resumeAudio);
+        document.removeEventListener('touchstart', resumeAudio);
+        document.removeEventListener('scroll', resumeAudio);
+      };
+      document.addEventListener('click', resumeAudio);
+      document.addEventListener('touchstart', resumeAudio);
+      document.addEventListener('scroll', resumeAudio);
+    });
+  });
+</script>
+
+</body>
+</html>
